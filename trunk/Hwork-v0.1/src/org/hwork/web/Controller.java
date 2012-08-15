@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hwork.annotation.ViewsPackage;
+import org.hwork.annotation.ControllerName;
 import org.hwork.render.Render;
 import org.hwork.utils.LoadProperties;
 import org.hwork.utils.StringUtils;
@@ -76,8 +76,8 @@ public abstract class Controller {
 		Render render = (Render)clazz.newInstance();
 		render.setRequest(request);
 		render.setResponse(response);
-		if(this.getClass().isAnnotationPresent(ViewsPackage.class)){
-			view = this.getClass().getAnnotation(ViewsPackage.class).value() + "/" + view;
+		if(this.getClass().isAnnotationPresent(ControllerName.class)){
+			view = this.getClass().getAnnotation(ControllerName.class).value() + "/" + view;
 		}else{
 			view = this.getClass().getSimpleName().replaceAll("Controller", "").toLowerCase() + "/" + view;
 		}

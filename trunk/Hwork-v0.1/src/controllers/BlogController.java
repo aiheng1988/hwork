@@ -1,12 +1,9 @@
 package controllers;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
-import org.hwork.annotation.ViewsPackage;
+import org.hwork.annotation.ControllerName;
 import org.hwork.db.DbConnectionManager;
-import org.hwork.db.ProxyConnection;
 import org.hwork.web.Controller;
 
 /**
@@ -16,7 +13,7 @@ import org.hwork.web.Controller;
  * @version V0.1  
  */
 
-@ViewsPackage("index")
+@ControllerName("index")
 public class BlogController extends Controller {
 	private DbConnectionManager dbManager;
 	
@@ -31,7 +28,7 @@ public class BlogController extends Controller {
 	}
 	
 	public void index() throws Exception{
-		assign("name", params.get("name")[0]);
+		
 		render("list");
 	}
 	

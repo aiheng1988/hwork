@@ -10,7 +10,7 @@ import org.hwork.utils.StringUtils;
 import org.hwork.web.ActionMapping;
 
 /**
- * @Description: TODO
+ * @Description: 路由所有的请求，并交给相应模块处理
  * @author heng.ai@chinacache.com  
  * @date 2012-8-7 下午10:36:51 
  * @version V0.1  

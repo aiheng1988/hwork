@@ -3,7 +3,6 @@ package org.hwork.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hwork.db.DbConnectionManager;
@@ -64,7 +63,6 @@ public abstract class BaseModel {
 		flag = pstmt.execute();
 		return flag;
 	}
-	
 	
 	protected abstract String getTableName();
 
