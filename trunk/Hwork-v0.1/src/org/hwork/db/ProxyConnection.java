@@ -25,6 +25,7 @@ public class ProxyConnection implements InvocationHandler {
 		Object obj = null;
 		if(CLOSE_METHOD_NAME.equals(method.getName())){
 			dbManager.close(this.connection);
+			return null;
 		}else{
 			obj = method.invoke(this.connection, args);
 		}
