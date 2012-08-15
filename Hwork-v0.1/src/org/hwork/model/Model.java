@@ -18,5 +18,5 @@ public abstract class Model<T> extends BaseModel {
 		}
 		return tableName;
 	}
-
+	
 }
