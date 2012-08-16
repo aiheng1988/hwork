@@ -128,6 +128,7 @@ public abstract class BaseModel {
 		} catch(SQLException e){
 			logger.error("请检查sql语句是否正确,sql:[ " + sql + " ]", e);
 		} finally{
+			logger.info("sql:" + sql);
 			close(conn, pstmt, rs);
 		}
 		return maps;

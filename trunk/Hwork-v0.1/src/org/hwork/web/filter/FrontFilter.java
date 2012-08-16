@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.hwork.annotation.ControllerName;
 import org.hwork.utils.LoadProperties;
 import org.hwork.utils.StringUtils;
+import org.hwork.web.ActionContext;
 import org.hwork.web.ActionMapping;
 import org.hwork.web.ActionMappingExecute;
 import org.hwork.web.Constant;
@@ -61,8 +62,9 @@ public class FrontFilter implements Filter{
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("包扫描出错，有部分包不存在", e);
 		}
-		//将controllers设置到router中
-		router.setControllers(controllers);
+		//将controllers设置到上下文中
+		ActionContext.setControllers(controllers);
+		ActionContext.setApplication(filterConfig.getServletContext());
 	}
 
 	@Override
@@ -74,9 +76,12 @@ public class FrontFilter implements Filter{
 		request.setCharacterEncoding(Constant.encoding);
 		response.setCharacterEncoding(Constant.encoding);
 		
+		ActionContext.setRequest(request);
+		ActionContext.setResponse(response);
+		
 		ActionMapping actionMapping = router.doRouter(request, response);
 	
-		ActionMappingExecute execute = new ActionMappingExecute(actionMapping, controllers, request, response);
+		ActionMappingExecute execute = new ActionMappingExecute(actionMapping, request, response);
 		try {
 			if(!execute.doExecute()){
 				filterChain.doFilter(request, response);
@@ -96,6 +101,7 @@ public class FrontFilter implements Filter{
 	@Override
 	public void destroy() {
 		controllers.clear(); //清空
+		ActionContext.clean();
 	}
 	
 	public void text(String message, HttpServletResponse response) throws IOException{

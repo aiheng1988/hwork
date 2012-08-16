@@ -75,7 +75,7 @@ public class DbConnectionManager {
 				for(int i = 0; i < minConns; i++){
 					Connection conn = DriverManager.getConnection(url, userName, password);
 					freeConnections.add(conn);
-					System.out.println("初始化数据库连接放入连接池" + i);
+					logger.debug("初始化数据库连接放入连接池" + i);
 				}
 			} catch (ClassNotFoundException e) {
 				logger.error("驱动无法加载，请检查驱动是否存在，driver: " + driverClass, e);
@@ -89,7 +89,7 @@ public class DbConnectionManager {
 		 * @return
 		 */
 		public synchronized Connection getConnection(){
-			System.out.println("已用 " + isUsed + " 个连接，空闲连接个数 " + freeConnections.size());
+			logger.debug("已用 " + isUsed + " 个连接，空闲连接个数 " + freeConnections.size());
 			Connection conn = null;
 			if(freeConnections.size() > 0){
 				conn = freeConnections.firstElement();
@@ -133,7 +133,7 @@ public class DbConnectionManager {
 			freeConnections.add(conn);
 			if(isUsed > 0) isUsed--;
 			notifyAll();
-			logger.info("释放连接!");
+			logger.debug("释放连接!");
 		}
 		
 		private Connection newConnection(){

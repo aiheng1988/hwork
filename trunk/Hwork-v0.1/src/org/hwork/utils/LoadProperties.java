@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.hwork.web.Constant;
-
 /**
  * @Description: TODO
  * @author heng.ai@chinacache.com  
