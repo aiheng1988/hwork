@@ -1,9 +1,6 @@
 package controllers;
 
-import java.sql.Connection;
-
 import org.hwork.annotation.ControllerName;
-import org.hwork.db.DbConnectionManager;
 import org.hwork.web.Controller;
 
 /**
@@ -13,14 +10,11 @@ import org.hwork.web.Controller;
  * @version V0.1  
  */
 
-@ControllerName("index")
+@ControllerName("blog")
 public class BlogController extends Controller {
-	private DbConnectionManager dbManager;
 	
 	@Override
 	public void init() throws Exception {
-		dbManager = DbConnectionManager.newInstance();
-		System.out.println("每一次请求，都会执行这个!");
 	}
 
 	public void list() throws Exception{
@@ -33,8 +27,7 @@ public class BlogController extends Controller {
 	}
 	
 	public void test() throws Exception{
-		Connection conn = dbManager.getConnection();
-		conn.close();
+		
 	}
 
 }

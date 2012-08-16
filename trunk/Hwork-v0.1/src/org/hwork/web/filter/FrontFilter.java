@@ -61,7 +61,8 @@ public class FrontFilter implements Filter{
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("包扫描出错，有部分包不存在", e);
 		}
-		System.out.println(controllers.size());
+		//将controllers设置到router中
+		router.setControllers(controllers);
 	}
 
 	@Override
