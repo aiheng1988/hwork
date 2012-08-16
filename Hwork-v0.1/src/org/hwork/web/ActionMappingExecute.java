@@ -37,7 +37,16 @@ public class ActionMappingExecute {
 		String method = actionMapping.getMethod();
 		Map<String, String[]> params = actionMapping.getParams();
 		String actionClass = null;
+		//放过收藏夹图标
 		if("favicon.ico".equals(action)){
+			return false;
+		}
+		//放过静态资源文件夹
+		String staticFolder = null;
+		if((staticFolder = new LoadProperties(Constant.propertiesName).getValue("staticFolder")) == null){
+			staticFolder = "public";
+		}
+		if(staticFolder.equals(action)){
 			return false;
 		}
 		String controllerPackage = new LoadProperties(Constant.propertiesName).getValue("controllerPackage");
@@ -54,8 +63,8 @@ public class ActionMappingExecute {
 		controller.setResponse(response);
 		//先执行init()方法
 		Class.forName(actionClass).getMethod("init").invoke(controller, NULLPARAMS);
+		//处理对应的controller
 		m.invoke(controller, NULLPARAMS);
-		//TODO: 如何去处理现在的请求。。。
 		
 		return true;
 	}
