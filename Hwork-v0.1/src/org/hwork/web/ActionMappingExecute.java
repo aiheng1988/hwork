@@ -1,11 +1,14 @@
 package org.hwork.web;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hwork.annotation.Import;
+import org.hwork.annotation.RequestMapping;
 import org.hwork.utils.LoadProperties;
 import org.hwork.utils.StringUtils;
 
@@ -24,12 +27,11 @@ public class ActionMappingExecute {
 	private HttpServletResponse response;
 	private Map<String, Class<? extends Controller>> controllers;
 	
-	public ActionMappingExecute(ActionMapping actionMapping,
-			Map<String, Class<? extends Controller>> controllers, HttpServletRequest request, HttpServletResponse response){
+	public ActionMappingExecute(ActionMapping actionMapping, HttpServletRequest request, HttpServletResponse response){
 		this.actionMapping = actionMapping;
 		this.request = request;
 		this.response = response;
-		this.controllers = controllers;
+		controllers = ActionContext.getControllers();
 	}
 	
 	public boolean doExecute() throws Exception{
@@ -52,19 +54,38 @@ public class ActionMappingExecute {
 		String controllerPackage = new LoadProperties(Constant.propertiesName).getValue("controllerPackage");
 		actionClass = controllerPackage + "." + StringUtils.toUpperFirst(action) + "Controller";
 		
-		if(controllers.containsKey(action)){
-			actionClass = controllers.get(action).getName();
+		if(controllers.containsKey(action.toLowerCase())){
+			actionClass = controllers.get(action.toLowerCase()).getName();
 		}
 		
 		Controller controller = (Controller) Class.forName(actionClass).newInstance();
-		Method m = Class.forName(actionClass).getMethod(method);
+		//设置上下文变量
 		controller.setParams(params);
 		controller.setRequest(request);
 		controller.setResponse(response);
+		Method me = null;
+		for(Method m : Class.forName(actionClass).getMethods()){
+			//如果存在Method级别的注解
+			if(m.isAnnotationPresent((RequestMapping.class))){
+				RequestMapping anno = m.getAnnotation(RequestMapping.class);
+				if(method.equals(anno.value()) && request.getMethod().equalsIgnoreCase(anno.method().getMethod())){
+					me = m;
+					break;
+				}
+			}
+		}
+		me = me == null ? Class.forName(actionClass).getMethod(method) : me;
+		//给Import注入对象
+		for(Field field : Class.forName(actionClass).getDeclaredFields()){
+			if(field.isAnnotationPresent(Import.class)){
+				field.setAccessible(true);
+				field.set(controller, field.getType().newInstance());
+			}
+		}
 		//先执行init()方法
 		Class.forName(actionClass).getMethod("init").invoke(controller, NULLPARAMS);
 		//处理对应的controller
-		m.invoke(controller, NULLPARAMS);
+		me.invoke(controller, NULLPARAMS);
 		
 		return true;
 	}

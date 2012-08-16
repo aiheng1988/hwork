@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hwork.utils.StringUtils;
 import org.hwork.web.ActionMapping;
-import org.hwork.web.Controller;
 
 /**
  * @Description: 路由所有的请求，并交给相应模块处理
@@ -19,12 +18,10 @@ import org.hwork.web.Controller;
 
 public final class BaseRouter implements Router {
 	
-	private Map<String, Class<? extends Controller>> controllers;
 
 	@Override
 	public ActionMapping doRouter(HttpServletRequest request,
 			HttpServletResponse response) {
-		
 		ActionMapping actionMapping = new ActionMapping();
 		
 		String contextPath = request.getContextPath();
@@ -37,12 +34,7 @@ public final class BaseRouter implements Router {
 		
 		Map<String,String[]> params = new HashMap<String, String[]>();
 		//处理默认首页的情况
-		if(!controllers.containsKey("index")){
-			actionMapping.setAction("Index");
-		} else{
-			Class<? extends Controller> packageClass = controllers.get("index");
-			actionMapping.setAction(packageClass.getSimpleName().toLowerCase().replace("controller", ""));
-		}
+		actionMapping.setAction("Index");
 		actionMapping.setMethod("index");
 		actionMapping.setParams(params);
 		
@@ -78,12 +70,6 @@ public final class BaseRouter implements Router {
 		actionMapping.setParams(params);
 		
 		return actionMapping;
-	}
-
-	@Override
-	public void setControllers(
-			Map<String, Class<? extends Controller>> controllers) {
-		this.controllers = controllers;
 	}
 
 }
