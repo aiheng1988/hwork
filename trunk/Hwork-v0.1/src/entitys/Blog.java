@@ -1,5 +1,8 @@
 package entitys;
 
+import java.util.Date;
+
+import org.hwork.annotation.Json;
 import org.hwork.annotation.PrimaryKey;
 import org.hwork.annotation.Table;
 
@@ -11,6 +14,8 @@ public class Blog {
 	private String title;
 	private String email;
 	private String content;
+	private Date date;
+	private Users users;
 	
 	public int getId() {
 		return id;
@@ -35,6 +40,20 @@ public class Blog {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	
+	public void setUsers(Users users){
+		this.users = users;
+	}
+	
+	public Users getUsers(){
+		return users;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 }

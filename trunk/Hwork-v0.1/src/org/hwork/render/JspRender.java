@@ -13,6 +13,7 @@ public class JspRender extends Render {
 	public void render(String view) {
 		try {
 			request.getRequestDispatcher(view).forward(request, response);
+			return;
 		} catch (ServletException e) {
 			logger.error(e.getMessage(), e);
 		} catch (IOException e) {

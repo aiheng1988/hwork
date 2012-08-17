@@ -1,5 +1,8 @@
 package org.hwork.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @Description: 字符串工具
  * @author heng.ai@chinacache.com  
@@ -30,5 +33,14 @@ public class StringUtils {
 		return str;
 	}
 	
+	public static int counts(String str, String regex){
+		int result = 0;
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(str);
+		while(matcher.find()){
+			result++;
+		}
+		return result;
+	}
 
 }
