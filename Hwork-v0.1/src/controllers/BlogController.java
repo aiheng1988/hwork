@@ -8,6 +8,7 @@ import org.hwork.annotation.ControllerName;
 import org.hwork.annotation.Import;
 import org.hwork.annotation.RequestMapping;
 import org.hwork.common.RequestMethod;
+import org.hwork.utils.JsonUtils;
 import org.hwork.web.Controller;
 
 import entitys.Blog;
@@ -31,20 +32,16 @@ public class BlogController extends Controller {
 
 	@RequestMapping(value = "ll", method = RequestMethod.GET)
 	public void list() throws Exception{
-		render("list.jsp");
+		render("redirect:/index/index");
 	}
 	
 	public void index() throws Exception{
-		render("list");
+		renderText(JsonUtils.toJson(params));
 	}
 	
 	public void test() throws Exception{
 		List<Blog> lists = blogModel.findAll();
-		String s = "";
-		for(Blog e : lists){
-			s += e.getContent() + "<br/>";
-		}
-		renderHtml(s);
+		renderJson(lists, false);
 	}
 
 }
