@@ -1,13 +1,11 @@
 package org.hwork.web;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hwork.annotation.Import;
 import org.hwork.annotation.RequestMapping;
 import org.hwork.utils.LoadProperties;
 import org.hwork.utils.StringUtils;
@@ -75,13 +73,10 @@ public class ActionMappingExecute {
 			}
 		}
 		me = me == null ? Class.forName(actionClass).getMethod(method) : me;
-		//给Import注入对象
-		for(Field field : Class.forName(actionClass).getDeclaredFields()){
-			if(field.isAnnotationPresent(Import.class)){
-				field.setAccessible(true);
-				field.set(controller, field.getType().newInstance());
-			}
-		}
+		
+		//自动绑定值
+		new AutoImportValue(actionClass, controller, params).importValue();
+		
 		//先执行init()方法
 		Class.forName(actionClass).getMethod("init").invoke(controller, NULLPARAMS);
 		//处理对应的controller

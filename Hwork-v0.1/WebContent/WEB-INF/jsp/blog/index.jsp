@@ -7,8 +7,10 @@
 <title>Hwork留言本</title>
 </head>
 <body>
-<form action="">
-
+<form action="/blog/add" method="post">
+<input type="text" name="users.username" value="aiheng1988" />
+<input type="text" name="users.password" value="haha" />
+<input type="submit" value="测试" />
 </form>
 </body>
 </html>

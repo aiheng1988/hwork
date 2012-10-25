@@ -12,6 +12,7 @@ import org.hwork.utils.JsonUtils;
 import org.hwork.web.Controller;
 
 import entitys.Blog;
+import entitys.Users;
 
 /**
  * @Description: TODO
@@ -20,8 +21,14 @@ import entitys.Blog;
  * @version V0.1  
  */
 
-@ControllerName("index")
+@ControllerName("blog")
 public class BlogController extends Controller {
+	
+	private String username;
+	
+	private Blog blog;
+	
+	private Users users;
 	
 	@Import
 	private BlogModel blogModel;
@@ -36,12 +43,22 @@ public class BlogController extends Controller {
 	}
 	
 	public void index() throws Exception{
-		renderText(JsonUtils.toJson(params));
+		render("index");
 	}
 	
 	public void test() throws Exception{
 		List<Blog> lists = blogModel.findAll();
+		System.out.println(username);
 		renderJson(lists, false);
+	}
+	
+	public void testBlog() throws Exception{
+		System.out.println(blog.getUsers().getUsername() + blog.getTitle());
+	}
+
+	@RequestMapping(value="add", method = RequestMethod.POST)
+	public void addUsers() throws Exception{
+		renderJson(users);
 	}
 
 }

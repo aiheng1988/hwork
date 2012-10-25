@@ -1,13 +1,17 @@
 package org.hwork.web.router;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.hwork.utils.StringUtils;
 import org.hwork.web.ActionMapping;
+import org.hwork.web.Constant;
 
 /**
  * @Description: 路由所有的请求，并交给相应模块处理
@@ -18,6 +22,8 @@ import org.hwork.web.ActionMapping;
 
 public final class BaseRouter implements Router {
 	
+
+	private final static Logger logger = Logger.getLogger(BaseRouter.class);
 
 	@Override
 	public ActionMapping doRouter(HttpServletRequest request,
@@ -54,7 +60,11 @@ public final class BaseRouter implements Router {
 				for (int i = 2,len = strs.length; i < len; i+=2){
 					String value = "";
 					if(len > i+1){
-						value = strs[i+1];
+						try {
+							value = URLDecoder.decode(strs[i+1], Constant.encoding);
+						} catch (UnsupportedEncodingException e) {
+							logger .info("不支持的编码 " + Constant.encoding);
+						}
 					}
 					String[] values = value.split(",");
 					params.put(strs[i], values);

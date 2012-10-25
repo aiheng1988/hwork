@@ -1,7 +1,5 @@
 package entitys;
 
-import org.hwork.annotation.Json;
-
 public class Users {
 	
 	private String username;
