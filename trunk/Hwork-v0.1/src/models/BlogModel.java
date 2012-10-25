@@ -1,7 +1,5 @@
 package models;
 
-
-
 import org.hwork.model.Model;
 
 import entitys.Blog;

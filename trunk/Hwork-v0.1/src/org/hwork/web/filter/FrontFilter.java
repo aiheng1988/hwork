@@ -104,7 +104,7 @@ public class FrontFilter implements Filter{
 		ActionContext.clean();
 	}
 	
-	public void text(String message, HttpServletResponse response) throws IOException{
+	private void text(String message, HttpServletResponse response) throws IOException{
 		response.setContentType("text/plain;charset=UTF-8");
 		response.getWriter().write(message);
 		response.getWriter().close();

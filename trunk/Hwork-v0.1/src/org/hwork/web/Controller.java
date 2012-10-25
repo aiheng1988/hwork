@@ -89,6 +89,16 @@ public abstract class Controller {
 		render(message, "text/plain;charset=UTF-8");
 	}
 	
+	public void renderText(Object object) throws Exception{
+		if(object instanceof String){
+			renderText((String)object);
+		}
+		if(object == null){
+			renderText("null");
+		}
+		renderText(object.toString());
+	}
+	
 	/**
 	 * 渲染文本信息至网页
 	 * @param message

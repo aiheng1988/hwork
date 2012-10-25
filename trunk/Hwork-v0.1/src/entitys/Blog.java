@@ -2,7 +2,6 @@ package entitys;
 
 import java.util.Date;
 
-import org.hwork.annotation.Json;
 import org.hwork.annotation.PrimaryKey;
 import org.hwork.annotation.Table;
 
